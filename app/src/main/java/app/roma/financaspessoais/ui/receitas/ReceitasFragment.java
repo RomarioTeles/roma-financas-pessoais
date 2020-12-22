@@ -5,39 +5,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
+import app.roma.financaspessoais.datasource.services.PeriodoService;
 import app.roma.financaspessoais.entities.rel.ReceitaMesComItems;
-import io.reactivex.Flowable;
 
 public class ReceitasFragment extends Fragment {
 
     private BigDecimal totalReceitas = BigDecimal.ZERO;
     private BigDecimal totalReceitasPagas = BigDecimal.ZERO;
 
-    private TextView textviewTotalValor, textviewTotalValorPago;
+    private TextView textviewTotalValor, textviewTotalValorPago, textviewTitulo;
 
     private ProgressBar progressBarTotal;
 
     private ExpandableListView listViewReceitas;
 
-    private final String periodo = "12/2020";
-
-    private ReceitasAdapter receitasAdapter;
+    private PeriodoService periodoService;
 
     private List<ReceitaMesComItems> items = new ArrayList<>();
 
@@ -45,14 +40,18 @@ public class ReceitasFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_receitas, container, false);
+
+        periodoService = new PeriodoService(this.getContext());
+
         textviewTotalValor = root.findViewById(R.id.textviewTotalValor);
         textviewTotalValorPago = root.findViewById(R.id.textviewTotalValorPago);
+        textviewTitulo = root.findViewById(R.id.textviewTitulo);
         progressBarTotal = root.findViewById(R.id.progressBarTotal);
         progressBarTotal.setMax(0);
         progressBarTotal.setMin(0);
         progressBarTotal.setProgress(0);
 
-        listViewReceitas = root.findViewById(R.id.listViewReceitas);
+        listViewReceitas = root.findViewById(R.id.listViewLancamentos);
 
         return root;
     }
@@ -61,18 +60,21 @@ public class ReceitasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+            String periodo = periodoService.getPeriodoSelecionado();
+            textviewTitulo.setText("Receitas de "+ periodo);
+
             AppDataBase.getAppDataBase(getContext()).receitaMesDAO().getTodasComItemReceita(periodo).observe(getViewLifecycleOwner(), event -> {
                 items = new ArrayList(event);
                 atualizaProgressBar();
             });
 
             AppDataBase.getAppDataBase(getContext()).receitaMesDAO().getTotalReceitas(periodo).observe(getViewLifecycleOwner(), event -> {
-                totalReceitas = totalReceitas.add(new BigDecimal(event)).divide(new BigDecimal(100));
+                totalReceitas = new BigDecimal(event).setScale(2, RoundingMode.HALF_EVEN);
                 atualizaProgressBar();
             });
 
             AppDataBase.getAppDataBase(getContext()).receitaMesDAO().getTotalReceitasPagas(periodo).observe(getViewLifecycleOwner(), event -> {
-                totalReceitasPagas = totalReceitasPagas.add(new BigDecimal(event)).divide(new BigDecimal(100));
+                totalReceitasPagas = new BigDecimal(event).setScale(2, RoundingMode.HALF_EVEN);
                 atualizaProgressBar();
             });
 
@@ -84,7 +86,10 @@ public class ReceitasFragment extends Fragment {
         progressBarTotal.setProgress(totalReceitasPagas.intValue());
         textviewTotalValor.setText("R$ "+totalReceitas.toString());
         textviewTotalValorPago.setText("R$ "+totalReceitasPagas.toString());
-        receitasAdapter = new ReceitasAdapter(this.getContext(), items);
+        ReceitasAdapter receitasAdapter = new ReceitasAdapter(this.getContext(), items);
         listViewReceitas.setAdapter(receitasAdapter);
+        for(int i = 0; i < items.size(); i++){
+            listViewReceitas.expandGroup(i);
+        }
     }
 }

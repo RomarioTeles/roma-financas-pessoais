@@ -34,16 +34,41 @@
         app:layout_constraintStart_toEndOf="@+id/textviewDescricao"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/editTextValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:text="R$ 65,70"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEditar"
+        app:layout_constraintStart_toEndOf="@+id/textviewDescricao"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <ImageButton
         android:id="@+id/buttonEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:padding="8dp"
-        android:src="@drawable/ic_home_black_24dp"
+        android:src="@drawable/pencil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonConfirmar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:src="@drawable/check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"

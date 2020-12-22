@@ -9,7 +9,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Categoria extends EntidadeRemovivel{
+public class Categoria extends EntidadeRemovivel implements Listavel{
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -61,6 +61,11 @@ public class Categoria extends EntidadeRemovivel{
     public Categoria() {
     }
 
+    @Override
+    public String getConteudo() {
+        return nome;
+    }
+
     public Long getId() {
         return id;
     }
@@ -104,9 +109,9 @@ public class Categoria extends EntidadeRemovivel{
         contentValues.put("id", id);
         contentValues.put("nome", nome);
         contentValues.put("subcategoria", subcategoria);
-        contentValues.put("tipo_lancamento", TipoLancamento.DESPESA.toString());
+        contentValues.put("tipo_lancamento", tipoLancamento.name());
         contentValues.put("cor", cor);
-        contentValues.put("flagRemocao", true);
+        contentValues.put("flagRemocao", isFlagRemocao());
 
         return contentValues;
     }

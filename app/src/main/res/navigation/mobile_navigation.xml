@@ -18,8 +18,14 @@
         tools:layout="@layout/fragment_receitas" />
 
     <fragment
+        android:id="@+id/navigation_despesas"
+        android:name="app.roma.financaspessoais.ui.despesas.DespesasFragment"
+        android:label="Despesas"
+        tools:layout="@layout/fragment_despesas" />
+
+    <fragment
         android:id="@+id/navigation_categorias"
         android:name="app.roma.financaspessoais.ui.categorias.CategoriasFragment"
         android:label="Categorias"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_categorias" />
 </navigation>

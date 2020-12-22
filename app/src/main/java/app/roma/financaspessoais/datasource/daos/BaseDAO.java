@@ -8,17 +8,18 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.RawQuery;
+import androidx.room.Update;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
 @Dao
 public abstract class BaseDAO<T> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract long save(T obj);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void save(T obj);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract long[] save(T... objs);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void save(T... objs);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract long insert(T obj);

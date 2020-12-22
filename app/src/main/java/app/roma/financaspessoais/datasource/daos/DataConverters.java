@@ -44,7 +44,7 @@ public class DataConverters {
         if (bigDecimal == null) {
             return null;
         } else {
-            return bigDecimal.multiply(new BigDecimal(100)).doubleValue();
+            return bigDecimal.doubleValue();
         }
     }
 

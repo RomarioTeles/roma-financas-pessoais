@@ -3,17 +3,22 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/home_currency_usd"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_receitas"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/wallet"
         android:title="Receitas" />
 
     <item
+        android:id="@+id/navigation_despesas"
+        android:icon="@drawable/barcode"
+        android:title="Despesas" />
+
+    <item
         android:id="@+id/navigation_categorias"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Categorias" />
+        android:icon="@drawable/database"
+        android:title="Cadastros" />
 
 </menu>

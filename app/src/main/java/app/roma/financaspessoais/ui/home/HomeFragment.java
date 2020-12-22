@@ -7,28 +7,52 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import app.roma.financaspessoais.R;
+import app.roma.financaspessoais.datasource.services.PeriodoService;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private PeriodoService periodoService;
+
+    String[] periodosArray = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+        periodoService = new PeriodoService(this.getContext());
+        final TextView textView = root.findViewById(R.id.textviewPeriodo);
+        textView.setText(periodoService.getPeriodoSelecionado());
+        textView.setOnClickListener(v -> {
+            showDialog();
         });
+
+        loadPeriodos();
+
         return root;
     }
+
+    private void loadPeriodos(){
+
+        periodoService.getTodosPeriodos().handle((periodos, throwable) -> {
+            periodosArray = periodos.toArray(new String[]{});
+            return null;
+        });
+
+    }
+
+    public void showDialog() {
+        if(periodosArray != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                    .setTitle("Selecione um periodo")
+                    .setItems(periodosArray, (dialog, which) -> {
+                        periodoService.save(periodosArray[which]);
+                        dialog.dismiss();
+                    });
+            builder.create().show();
+        }
+    }
+
+
 }

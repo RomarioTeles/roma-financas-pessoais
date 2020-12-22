@@ -1,4 +1,4 @@
-package app.roma.financaspessoais.ui.receitas;
+package app.roma.financaspessoais.ui.despesas;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -22,28 +22,27 @@ import java.util.Set;
 
 import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
-import app.roma.financaspessoais.entities.ItemReceita;
-import app.roma.financaspessoais.entities.ReceitaMes;
-import app.roma.financaspessoais.entities.rel.ReceitaMesComItems;
-import app.roma.financaspessoais.ui.despesas.DespesasAdapter;
+import app.roma.financaspessoais.entities.DespesaMes;
+import app.roma.financaspessoais.entities.ItemDespesa;
+import app.roma.financaspessoais.entities.rel.DespesaMesComItems;
 
-public class ReceitasAdapter extends BaseExpandableListAdapter {
+public class DespesasAdapter extends BaseExpandableListAdapter {
 
-    private Map<ReceitaMes, Set<ItemReceita>> mapItems = new HashMap<>();
+    private Map<DespesaMes, Set<ItemDespesa>> mapItems = new HashMap<>();
 
-    private List<ReceitaMes> expandableListTitle = new ArrayList<>();
+    private List<DespesaMes> expandableListTitle = new ArrayList<>();
 
     private Context context;
 
-    public ReceitasAdapter(Context context, List<ReceitaMesComItems> items) {
+    public DespesasAdapter(Context context, List<DespesaMesComItems> items) {
         super();
         this.context = context;
         processaLista(items);
     }
 
-    private void processaLista(List<ReceitaMesComItems> items){
+    private void processaLista(List<DespesaMesComItems> items){
         if(items != null && items.size() > 0){
-            items.forEach(item -> mapItems.put(item.getReceitaMes(), item.getItens()));
+            items.forEach(item -> mapItems.put(item.getDespesaMes(), item.getItens()));
             expandableListTitle.addAll(mapItems.keySet());
         }
     }
@@ -70,12 +69,12 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return ( (ReceitaMes) getGroup(groupPosition)).getId();
+        return ( (DespesaMes) getGroup(groupPosition)).getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return ((ItemReceita) getChild(groupPosition, childPosition)).getId();
+        return ((ItemDespesa) getChild(groupPosition, childPosition)).getId();
     }
 
     @Override
@@ -85,22 +84,23 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        ReceitaMes receitaMes = (ReceitaMes) getGroup(groupPosition);
+        DespesaMes despesaMes = (DespesaMes) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
+
         TextView listTitleTextView = (TextView) convertView
                 .findViewById(R.id.listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
-        listTitleTextView.setText(receitaMes.getCategoriaNome());
+        listTitleTextView.setText(despesaMes.getCategoriaNome());
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final ItemReceita itemReceita = (ItemReceita) getChild(groupPosition, childPosition);
+        final ItemDespesa itemDespesa = (ItemDespesa) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -114,22 +114,22 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         ImageButton buttonEditar = convertView.findViewById(R.id.buttonEditar);
         ImageButton buttonConfirmar = convertView.findViewById(R.id.buttonConfirmar);
 
-        textviewDescricao.setText(itemReceita.getDescricao());
-        textviewValor.setText("R$ "+itemReceita.getValor().toString());
-        editTextValor.setText(itemReceita.getValor().toString());
-        checkboxPago.setChecked(itemReceita.isPago());
+        textviewDescricao.setText(itemDespesa.getDescricao());
+        textviewValor.setText("R$ "+itemDespesa.getValor().toString());
+        editTextValor.setText(itemDespesa.getValor().toString());
+        checkboxPago.setChecked(itemDespesa.isPago());
 
         editTextValor.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 BigDecimal valor = new BigDecimal(editTextValor.getText().toString());
-                itemReceita.setValor(valor);
-                new UpdateItemTask().execute(itemReceita);
+                itemDespesa.setValor(valor);
+                new UpdateItemTask().execute(itemDespesa);
                 return true;
             }
             return false;
         });
 
-        if(itemReceita.isEditarValor()){
+        if(itemDespesa.isEditarValor()){
             editTextValor.setVisibility(View.VISIBLE);
             buttonEditar.setVisibility(View.GONE);
 
@@ -145,19 +145,19 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         }
 
         checkboxPago.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            itemReceita.setPago(isChecked);
-            new UpdateItemTask().execute(itemReceita);
+            itemDespesa.setPago(isChecked);
+            new UpdateItemTask().execute(itemDespesa);
         });
 
         buttonEditar.setOnClickListener(v -> {
-            itemReceita.setEditarValor(true);
+            itemDespesa.setEditarValor(true);
             notifyDataSetChanged();
         });
 
         buttonConfirmar.setOnClickListener(v -> {
             BigDecimal valor = new BigDecimal(editTextValor.getText().toString());
-            itemReceita.setValor(valor);
-            new UpdateItemTask().execute(itemReceita);
+            itemDespesa.setValor(valor);
+            new UpdateItemTask().execute(itemDespesa);
         });
 
         return convertView;
@@ -168,13 +168,12 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-
-    class UpdateItemTask extends AsyncTask<ItemReceita, Void, Void> {
+    class UpdateItemTask extends AsyncTask<ItemDespesa, Void, Void>{
 
         @Override
-        protected Void doInBackground(ItemReceita... itemReceitas) {
+        protected Void doInBackground(ItemDespesa... itemDespesas) {
 
-            AppDataBase.getAppDataBase(context).itemReceitaDAO().save(itemReceitas[0]);
+            AppDataBase.getAppDataBase(context).itemDespesaDAO().save(itemDespesas[0]);
 
             return null;
         }

@@ -1,5 +1,7 @@
 package app.roma.financaspessoais.entities;
 
+import android.content.ContentValues;
+
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,15 +17,18 @@ public class DespesaMes extends EntidadeRemovivel{
 
     private String periodo;
 
-    private Long categoria;
+    private String categoriaNome;
+
+    private Long categoriaId;
 
     public DespesaMes() {
     }
 
-    public DespesaMes(Long id, String periodo, Long categoria) {
+    public DespesaMes(Long id, String periodo, String categoriaNome, Long categoriaId) {
         this.id = id;
         this.periodo = periodo;
-        this.categoria = categoria;
+        this.categoriaNome = categoriaNome;
+        this.categoriaId = categoriaId;
     }
 
     public Long getId() {
@@ -42,12 +47,20 @@ public class DespesaMes extends EntidadeRemovivel{
         this.periodo = periodo;
     }
 
-    public Long getCategoria() {
-        return categoria;
+    public String getCategoriaNome() {
+        return categoriaNome;
     }
 
-    public void setCategoria(Long categoria) {
-        this.categoria = categoria;
+    public void setCategoriaNome(String categoriaNome) {
+        this.categoriaNome = categoriaNome;
+    }
+
+    public Long getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     @Override
@@ -56,12 +69,12 @@ public class DespesaMes extends EntidadeRemovivel{
         if (o == null || getClass() != o.getClass()) return false;
         DespesaMes that = (DespesaMes) o;
         return Objects.equals(periodo, that.periodo) &&
-                Objects.equals(categoria, that.categoria);
+                Objects.equals(categoriaNome, that.categoriaNome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(periodo, categoria);
+        return Objects.hash(periodo, categoriaNome);
     }
 
     @Override
@@ -69,7 +82,19 @@ public class DespesaMes extends EntidadeRemovivel{
         return "DespesaMes{" +
                 "id=" + id +
                 ", periodo='" + periodo + '\'' +
-                ", categoria=" + categoria +
+                ", categoriaNome='" + categoriaNome + '\'' +
+                ", categoriaId=" + categoriaId +
                 '}';
+    }
+
+    public ContentValues toContentValues(){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", id);
+        contentValues.put("periodo", periodo);
+        contentValues.put("categoriaId", categoriaId);
+        contentValues.put("categoriaNome", categoriaNome);
+        contentValues.put("flagRemocao", isFlagRemocao());
+
+        return contentValues;
     }
 }

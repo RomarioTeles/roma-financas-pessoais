@@ -3,11 +3,13 @@ package app.roma.financaspessoais.entities;
 import android.content.ContentValues;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import app.roma.financaspessoais.datasource.daos.DataConverters;
@@ -29,6 +31,9 @@ public class ItemReceita extends EntidadeRemovivel{
     @ColumnInfo(name = "receita_mes")
     private Long receitaMes;
 
+    @Ignore
+    private boolean isEditarValor;
+
     public ContentValues toContentValues(){
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", id);
@@ -37,7 +42,7 @@ public class ItemReceita extends EntidadeRemovivel{
         contentValues.put("valor", new DataConverters().BigDecimalToDouble(valor));
         contentValues.put("pago", pago);
         contentValues.put("receita_mes", receitaMes);
-        contentValues.put("flagRemocao", true);
+        contentValues.put("flagRemocao", isFlagRemocao());
         return contentValues;
     }
 
@@ -48,6 +53,14 @@ public class ItemReceita extends EntidadeRemovivel{
         this.valor = valor;
         this.pago = pago;
         this.receitaMes = receitaMes;
+    }
+
+    public boolean isEditarValor() {
+        return isEditarValor;
+    }
+
+    public void setEditarValor(boolean editarValor) {
+        isEditarValor = editarValor;
     }
 
     public ItemReceita() {
@@ -70,7 +83,7 @@ public class ItemReceita extends EntidadeRemovivel{
     }
 
     public BigDecimal getValor() {
-        return valor;
+        return valor == null ? null : valor.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public void setValor(BigDecimal valor) {

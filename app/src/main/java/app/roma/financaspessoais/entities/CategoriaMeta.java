@@ -81,7 +81,7 @@ public class CategoriaMeta extends EntidadeRemovivel{
         contentValues.put("categoria", categoria);
         contentValues.put("meta", meta.doubleValue());
         contentValues.put("periodo", periodo);
-        contentValues.put("flagRemocao", true);
+        contentValues.put("flagRemocao", isFlagRemocao());
 
         return contentValues;
     }

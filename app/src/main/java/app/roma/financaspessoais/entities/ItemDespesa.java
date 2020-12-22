@@ -1,18 +1,25 @@
 package app.roma.financaspessoais.entities;
 
+import android.content.ContentValues;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import app.roma.financaspessoais.datasource.daos.DataConverters;
 
-@Entity
+@Entity(tableName = "item_despesa")
 public class ItemDespesa extends EntidadeRemovivel{
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
+
+    private String descricao;
 
     private LocalDateTime data;
 
@@ -27,17 +34,20 @@ public class ItemDespesa extends EntidadeRemovivel{
 
     private String cor = "#FFFFFF";
 
+    @Ignore
+    private boolean isEditarValor;
+
     public ItemDespesa() {
     }
 
-    public ItemDespesa(Long id, LocalDateTime data, BigDecimal valor, boolean pago, Long despesaMes, Long subcategoria, String cor) {
+    public ItemDespesa(Long id, String descricao, LocalDateTime data, BigDecimal valor, boolean pago, Long despesaMes, Long subcategoria) {
         this.id = id;
+        this.descricao = descricao;
         this.data = data;
         this.valor = valor;
         this.pago = pago;
         this.despesaMes = despesaMes;
         this.subcategoria = subcategoria;
-        this.cor = cor;
     }
 
     public String getCor() {
@@ -65,7 +75,7 @@ public class ItemDespesa extends EntidadeRemovivel{
     }
 
     public BigDecimal getValor() {
-        return valor;
+        return valor == null ? null : valor.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public void setValor(BigDecimal valor) {
@@ -96,6 +106,22 @@ public class ItemDespesa extends EntidadeRemovivel{
         this.subcategoria = subcategoria;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public boolean isEditarValor() {
+        return isEditarValor;
+    }
+
+    public void setEditarValor(boolean editarValor) {
+        isEditarValor = editarValor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,5 +133,19 @@ public class ItemDespesa extends EntidadeRemovivel{
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public ContentValues toContentValues(){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", id);
+        contentValues.put("descricao", descricao);
+        contentValues.put("data", new DataConverters().fromLocalDateTimeToLong(data));
+        contentValues.put("valor", new DataConverters().BigDecimalToDouble(valor));
+        contentValues.put("pago", pago);
+        contentValues.put("despesa_mes", despesaMes);
+        contentValues.put("subcategoria", subcategoria);
+        contentValues.put("cor", cor);
+        contentValues.put("flagRemocao", isFlagRemocao());
+        return contentValues;
     }
 }

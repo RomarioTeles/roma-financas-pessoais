@@ -78,7 +78,7 @@ public class ReceitaMes extends EntidadeRemovivel{
         contentValues.put("periodo", periodo);
         contentValues.put("categoriaId", categoriaId);
         contentValues.put("categoriaNome", categoriaNome);
-        contentValues.put("flagRemocao", true);
+        contentValues.put("flagRemocao", isFlagRemocao());
 
         return contentValues;
     }
