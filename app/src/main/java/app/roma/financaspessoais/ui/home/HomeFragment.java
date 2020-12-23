@@ -18,13 +18,15 @@ public class HomeFragment extends Fragment {
 
     String[] periodosArray = null;
 
+    TextView textViewPeriodo;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         periodoService = new PeriodoService(this.getContext());
-        final TextView textView = root.findViewById(R.id.textviewPeriodo);
-        textView.setText(periodoService.getPeriodoSelecionado());
-        textView.setOnClickListener(v -> {
+        textViewPeriodo = root.findViewById(R.id.textviewPeriodo);
+        textViewPeriodo.setText(periodoService.getPeriodoSelecionado());
+        textViewPeriodo.setOnClickListener(v -> {
             showDialog();
         });
 
@@ -47,6 +49,7 @@ public class HomeFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle("Selecione um periodo")
                     .setItems(periodosArray, (dialog, which) -> {
+                        textViewPeriodo.setText(periodosArray[which]);
                         periodoService.save(periodosArray[which]);
                         dialog.dismiss();
                     });

@@ -38,7 +38,7 @@ import app.roma.financaspessoais.entities.rel.CategoriaComMetas;
         ItemReceita.class,
         DespesaMes.class,
         ItemDespesa.class
-}, version = 1, exportSchema = false)
+}, version = 3, exportSchema = false)
 @TypeConverters(DataConverters.class)
 public abstract class AppDataBase extends RoomDatabase {
 
@@ -72,39 +72,50 @@ public abstract class AppDataBase extends RoomDatabase {
                 db.beginTransaction();
                 try {
 
-                    String periodo = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM 'de' yyyy", Locale.getDefault()));
+                    String periodo = LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMMM 'de' yyyy", Locale.getDefault()));
 
                     db.insert("categoria", 5, new Categoria("Gastos Essenciais", TipoLancamento.DESPESA, false).toContentValues());
-                    db.insert("categoria", 5, new Categoria("Salário", TipoLancamento.RECEITA, false).toContentValues());
-                    db.insert("categoria", 5, new Categoria("Dividendos", TipoLancamento.RECEITA, false).toContentValues());
-                    db.insert("categoria", 5, new Categoria("Renda Extra", TipoLancamento.RECEITA, false).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Desejos", TipoLancamento.DESPESA, false).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Poupança", TipoLancamento.DESPESA, false).toContentValues());
 
                     db.insert("categoria", 5, new Categoria("Moradia", TipoLancamento.DESPESA, true).toContentValues());
                     db.insert("categoria", 5, new Categoria("Estudos", TipoLancamento.DESPESA, true).toContentValues());
                     db.insert("categoria", 5, new Categoria("Alimentação", TipoLancamento.DESPESA, true).toContentValues());
                     db.insert("categoria", 5, new Categoria("Saúde", TipoLancamento.DESPESA, true).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Lazer", TipoLancamento.DESPESA, true).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Transporte", TipoLancamento.DESPESA, true).toContentValues());
 
-                    db.insert("categoria_meta", 5, new CategoriaMeta(2L, BigDecimal.TEN, periodo).toContentValues());
-                    db.insert("categoria_meta", 5, new CategoriaMeta(1L, BigDecimal.TEN, "01/2021").toContentValues());
-                    db.insert("categoria_meta", 5, new CategoriaMeta(1L, BigDecimal.TEN, "02/2021").toContentValues());
+                    db.insert("categoria", 5, new Categoria("Salário", TipoLancamento.RECEITA, false).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Dividendos", TipoLancamento.RECEITA, false).toContentValues());
+                    db.insert("categoria", 5, new Categoria("Renda Extra", TipoLancamento.RECEITA, false).toContentValues());
 
-                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 2L,  "Salário").toContentValues());
-                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 3L,  "Dividendos").toContentValues());
-                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 4L,  "Renda Extra").toContentValues());
 
-                    db.insert("item_receita", 5, new ItemReceita(null, "TED da Empresa", LocalDateTime.now(), new BigDecimal("2500"), true, 1L).toContentValues());
-                    db.insert("item_receita", 5, new ItemReceita(null, "Parcela do 13º", LocalDateTime.now(), new BigDecimal("1250"), true, 1L).toContentValues());
+                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 10L,  "Salário").toContentValues());
+                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 11L,  "Dividendos").toContentValues());
+                    db.insert("receita_mes", 5, new ReceitaMes(null, periodo, 12L,  "Renda Extra").toContentValues());
 
-                    db.insert("item_receita", 5, new ItemReceita(null, "ITAUSA", LocalDateTime.now(), new BigDecimal("10"), true, 2L).toContentValues());
-                    db.insert("item_receita", 5, new ItemReceita(null, "WEG", LocalDateTime.now(), new BigDecimal("13"), true, 2L).toContentValues());
-                    db.insert("item_receita", 5, new ItemReceita(null, "MAGALU", LocalDateTime.now(), new BigDecimal("60"), true, 2L).toContentValues());
+                    db.insert("item_receita", 5, new ItemReceita(null, "Pagamento", LocalDateTime.now(), BigDecimal.ZERO, false, true, 1L).toContentValues());
+                    db.insert("item_receita", 5, new ItemReceita(null, "Meus dividendos", LocalDateTime.now(), BigDecimal.ZERO, false, true, 2L).toContentValues());
+                    db.insert("item_receita", 5, new ItemReceita(null, "Minhas Rendas Extras", LocalDateTime.now(), BigDecimal.ZERO, false, true, 3L).toContentValues());
 
-                    db.insert("item_receita", 5, new ItemReceita(null, "Vendas dos Salgados", LocalDateTime.now(), new BigDecimal("560"), true, 3L).toContentValues());
 
                     db.insert("despesa_mes", 5, new DespesaMes(null, periodo, "Gastos Essenciais", 1L).toContentValues());
-                    db.insert("item_despesa", 5, new ItemDespesa(null, "Luz", LocalDateTime.now(), new BigDecimal("98"), false, 1L, 5L ).toContentValues());
+                    db.insert("despesa_mes", 5, new DespesaMes(null, periodo, "Desejos", 2L).toContentValues());
+                    db.insert("despesa_mes", 5, new DespesaMes(null, periodo, "Poupança", 3L).toContentValues());
 
 
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Luz", LocalDateTime.now(), BigDecimal.ZERO, false, true, 1L, 4L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Água", LocalDateTime.now(),BigDecimal.ZERO, false, true, 1L, 4L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Telefone", LocalDateTime.now(),BigDecimal.ZERO, false, true, 1L, 4L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Condomínio", LocalDateTime.now(),BigDecimal.ZERO, false, true, 1L, 4L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Internet", LocalDateTime.now(),BigDecimal.ZERO, false, true, 1L, 4L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Combustível", LocalDateTime.now(),BigDecimal.ZERO, false, true, 1L, 9L ).toContentValues());
+
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Aporte Mensal", LocalDateTime.now(),BigDecimal.ZERO, false, true, 3L, 3L ).toContentValues());
+
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Cinema", LocalDateTime.now(),BigDecimal.ZERO, false, true, 2L, 8L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Praia", LocalDateTime.now(),BigDecimal.ZERO, false, true, 2L, 8L ).toContentValues());
+                    db.insert("item_despesa", 5, new ItemDespesa(null, "Parque", LocalDateTime.now(),BigDecimal.ZERO, false, true, 2L, 8L ).toContentValues());
 
                     db.setTransactionSuccessful();
                 }catch (Exception e){

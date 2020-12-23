@@ -28,4 +28,7 @@ public abstract class ReceitaMesDAO extends BaseDAO<ReceitaMes> {
 
     @Query("SELECT distinct periodo FROM receita_mes order by id")
     public abstract List<String> getTodosPeriodos();
+
+    @Query("SELECT COUNT(*) FROM receita_mes rm WHERE rm.periodo = :periodo")
+    public abstract Integer countByPeriodo(String periodo);
 }

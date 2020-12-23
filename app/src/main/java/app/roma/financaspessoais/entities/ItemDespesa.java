@@ -34,13 +34,15 @@ public class ItemDespesa extends EntidadeRemovivel{
 
     private String cor = "#FFFFFF";
 
+    private boolean recorrente;
+
     @Ignore
     private boolean isEditarValor;
 
     public ItemDespesa() {
     }
 
-    public ItemDespesa(Long id, String descricao, LocalDateTime data, BigDecimal valor, boolean pago, Long despesaMes, Long subcategoria) {
+    public ItemDespesa(Long id, String descricao, LocalDateTime data, BigDecimal valor, boolean pago, boolean recorrente, Long despesaMes, Long subcategoria) {
         this.id = id;
         this.descricao = descricao;
         this.data = data;
@@ -48,6 +50,7 @@ public class ItemDespesa extends EntidadeRemovivel{
         this.pago = pago;
         this.despesaMes = despesaMes;
         this.subcategoria = subcategoria;
+        this.recorrente = recorrente;
     }
 
     public String getCor() {
@@ -122,6 +125,14 @@ public class ItemDespesa extends EntidadeRemovivel{
         isEditarValor = editarValor;
     }
 
+    public boolean isRecorrente() {
+        return recorrente;
+    }
+
+    public void setRecorrente(boolean recorrente) {
+        this.recorrente = recorrente;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,7 +146,7 @@ public class ItemDespesa extends EntidadeRemovivel{
         return Objects.hash(id);
     }
 
-    public ContentValues toContentValues(){
+    public ContentValues toContentValues() {
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", id);
         contentValues.put("descricao", descricao);
@@ -146,6 +157,7 @@ public class ItemDespesa extends EntidadeRemovivel{
         contentValues.put("subcategoria", subcategoria);
         contentValues.put("cor", cor);
         contentValues.put("flagRemocao", isFlagRemocao());
+        contentValues.put("recorrente", recorrente);
         return contentValues;
     }
 }

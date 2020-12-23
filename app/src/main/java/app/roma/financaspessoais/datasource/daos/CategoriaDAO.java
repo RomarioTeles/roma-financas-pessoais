@@ -19,9 +19,9 @@ public abstract class CategoriaDAO extends BaseDAO<Categoria>{
     public abstract LiveData<List<CategoriaComMetas>> getTodasCategoriasComMetas(String nome, String periodo);
 
     @Query("SELECT * FROM Categoria WHERE subcategoria = 1 and tipo_lancamento = :tipoLancamento and flagRemocao = 0")
-    public abstract LiveData<List<Categoria>> getTodasSubcategorias(String tipoLancamento);
+    public abstract LiveData<List<Categoria>> getTodasSubcategorias(TipoLancamento tipoLancamento);
 
     @Query("SELECT * FROM Categoria WHERE tipo_lancamento = :tipoLancamento ")
-    public abstract LiveData<List<Categoria>> getTodasCategorias(String tipoLancamento);
+    public abstract LiveData<List<Categoria>> getTodasCategorias(TipoLancamento tipoLancamento);
 
 }

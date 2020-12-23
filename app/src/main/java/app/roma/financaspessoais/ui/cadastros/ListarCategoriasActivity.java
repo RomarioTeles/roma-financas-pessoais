@@ -65,9 +65,9 @@ public class ListarCategoriasActivity extends AppCompatActivity {
         super.onResume();
 
         if(isSubcategoria){
-            AppDataBase.getAppDataBase(this).categoriaDAO().getTodasSubcategorias(tipoLancamento.name()).observe(this, this::atualizaLista);
+            AppDataBase.getAppDataBase(this).categoriaDAO().getTodasSubcategorias(tipoLancamento).observe(this, this::atualizaLista);
         }else {
-            AppDataBase.getAppDataBase(this).categoriaDAO().getTodasCategorias(tipoLancamento.name()).observe(this, this::atualizaLista);
+            AppDataBase.getAppDataBase(this).categoriaDAO().getTodasCategorias(tipoLancamento).observe(this, this::atualizaLista);
         }
 
     }

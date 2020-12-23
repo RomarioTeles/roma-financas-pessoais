@@ -30,21 +30,21 @@ public abstract class BaseDAO<T> {
     @Delete
     public abstract void delete(T obj);
 
-    int deleteAll() {
+    public int deleteAll() {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(
                 "delete from " + getTableName()
         );
         return doDeleteAll(query);
     }
 
-    List<T> findAllValid() {
+    public List<T> findAllValid() {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(
                 "select * from " + getTableName() + " where flagRemocao = 0 order by id"
         );
         return doFindAllValid(query);
     }
 
-    T find(long id) {
+    public T find(long id) {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(
                 "select * from " + getTableName() + " where flagRemocao = 0 and id = ?",
                 new Object[]{id}

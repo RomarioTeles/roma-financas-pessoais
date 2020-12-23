@@ -28,6 +28,8 @@ public class ItemReceita extends EntidadeRemovivel{
 
     private boolean pago;
 
+    private boolean recorrente;
+
     @ColumnInfo(name = "receita_mes")
     private Long receitaMes;
 
@@ -43,16 +45,18 @@ public class ItemReceita extends EntidadeRemovivel{
         contentValues.put("pago", pago);
         contentValues.put("receita_mes", receitaMes);
         contentValues.put("flagRemocao", isFlagRemocao());
+        contentValues.put("recorrente", recorrente);
         return contentValues;
     }
 
-    public ItemReceita(Long id, String descricao, LocalDateTime data, BigDecimal valor, boolean pago, Long receitaMes) {
+    public ItemReceita(Long id, String descricao, LocalDateTime data, BigDecimal valor, boolean pago, boolean recorrente, Long receitaMes) {
         this.id = id;
         this.descricao = descricao;
         this.data = data;
         this.valor = valor;
         this.pago = pago;
         this.receitaMes = receitaMes;
+        this.recorrente = recorrente;
     }
 
     public boolean isEditarValor() {
@@ -112,6 +116,14 @@ public class ItemReceita extends EntidadeRemovivel{
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public boolean isRecorrente() {
+        return recorrente;
+    }
+
+    public void setRecorrente(boolean recorrente) {
+        this.recorrente = recorrente;
     }
 
     @Override

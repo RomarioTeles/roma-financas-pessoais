@@ -30,4 +30,7 @@ public abstract class DespesaMesDAO extends BaseDAO<DespesaMes> {
     @Query("SELECT distinct periodo FROM despesa_mes order by id")
     public abstract List<String> getTodosPeriodos();
 
+    @Query("SELECT COUNT(*) FROM despesa_mes rm WHERE rm.periodo = :periodo")
+    public abstract Integer countByPeriodo(String periodo);
+
 }
