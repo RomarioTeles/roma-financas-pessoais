@@ -8,7 +8,7 @@ import java.util.Objects;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "categoria_meta")
+@Entity
 public class CategoriaMeta extends EntidadeRemovivel{
 
     @PrimaryKey(autoGenerate = true)

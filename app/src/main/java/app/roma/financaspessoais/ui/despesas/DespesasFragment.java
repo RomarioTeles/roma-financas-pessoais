@@ -1,7 +1,11 @@
 package app.roma.financaspessoais.ui.despesas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -20,6 +24,8 @@ import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
 import app.roma.financaspessoais.datasource.services.PeriodoService;
 import app.roma.financaspessoais.entities.rel.DespesaMesComItems;
+import app.roma.financaspessoais.ui.cadastros.CadastrarDespesaActivity;
+import app.roma.financaspessoais.ui.cadastros.CadastrarReceitaActivity;
 
 public class DespesasFragment extends Fragment {
 
@@ -44,7 +50,7 @@ public class DespesasFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_despesas, container, false);
-
+        setHasOptionsMenu(true);
         periodoService = new PeriodoService(getContext());
 
         textviewTotalValor = root.findViewById(R.id.textviewTotalValor);
@@ -95,5 +101,22 @@ public class DespesasFragment extends Fragment {
         for (int i = 0; i < items.size(); i++) {
             listViewDespesas.expandGroup(i);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.lancamentos_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_novo:
+                Intent intent = new Intent(getContext(), CadastrarDespesaActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

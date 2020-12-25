@@ -11,24 +11,27 @@ import app.roma.financaspessoais.entities.rel.ReceitaMesComItems;
 @Dao
 public abstract class ReceitaMesDAO extends BaseDAO<ReceitaMes> {
 
-    @Query("SELECT * FROM receita_mes Where periodo = :periodo")
+    @Query("SELECT * FROM receitames rm Where rm.periodo = :periodo")
     public abstract LiveData<List<ReceitaMesComItems>> getTodasComItemReceita(String periodo);
 
-    @Query("SELECT COALESCE(SUM(ir.valor), 0.0) FROM receita_mes AS r " +
-            "join item_receita AS ir ON ir.receita_mes = r.id " +
+    @Query("SELECT COALESCE(SUM(ir.valor), 0.0) FROM receitames AS r " +
+            "join itemreceita AS ir ON ir.receita_mes = r.id and ir.flagRemocao = 0 and r.flagRemocao = 0 " +
             "join Categoria AS c ON r.categoriaId = c.id " +
-            "Where r.periodo = :periodo and ir.flagRemocao = 0 and r.flagRemocao = 0")
+            "Where r.periodo = :periodo ")
     public abstract LiveData<Double> getTotalReceitas(String periodo);
 
-    @Query("SELECT COALESCE(SUM(ir.valor), 0.0) FROM receita_mes AS r " +
-            "join item_receita AS ir ON ir.receita_mes = r.id " +
+    @Query("SELECT COALESCE(SUM(ir.valor), 0.0) FROM receitames AS r " +
+            "join itemreceita AS ir ON ir.receita_mes = r.id and ir.flagRemocao = 0 and r.flagRemocao = 0 " +
             "join Categoria AS c ON r.categoriaId = c.id " +
-            "Where r.periodo = :periodo and ir.flagRemocao = 0 and r.flagRemocao = 0 and ir.pago = 1")
+            "Where r.periodo = :periodo and ir.pago = 1")
     public abstract LiveData<Double> getTotalReceitasPagas(String periodo);
 
-    @Query("SELECT distinct periodo FROM receita_mes order by id")
+    @Query("SELECT distinct periodo FROM receitames order by id")
     public abstract List<String> getTodosPeriodos();
 
-    @Query("SELECT COUNT(*) FROM receita_mes rm WHERE rm.periodo = :periodo")
+    @Query("SELECT COUNT(*) FROM receitames rm WHERE rm.periodo = :periodo")
     public abstract Integer countByPeriodo(String periodo);
+
+    @Query("SELECT * FROM receitames WHERE periodo = :periodo")
+    public abstract List<ReceitaMes> findByPeriodo(String periodo);
 }

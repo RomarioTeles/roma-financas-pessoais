@@ -4,22 +4,32 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <View
+        android:id="@+id/viewSubcategoriaIndicator"
+        android:layout_width="5dp"
+        android:layout_height="50dp"
+        android:background="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <CheckBox
         android:id="@+id/checkboxPago"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/viewSubcategoriaIndicator"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textviewDescricao"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:gravity="center|start"
         android:text="Conta de Luz desde mês"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/checkboxPago"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,32 +38,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center|start"
-        android:text="R$ 65,70"
+        android:text="R$ 0"
+        android:textStyle="bold"
+        android:layout_marginStart="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEditar"
-        app:layout_constraintStart_toEndOf="@+id/textviewDescricao"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textviewDescricao" />
 
     <EditText
         android:id="@+id/editTextValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center|start"
-        android:text="R$ 65,70"
+        android:text="R$ 0"
         android:inputType="numberDecimal"
+        android:layout_marginStart="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEditar"
-        app:layout_constraintStart_toEndOf="@+id/textviewDescricao"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textviewDescricao"
         android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/trash_can"
+        android:layout_marginEnd="38dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/buttonEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:padding="8dp"
         android:src="@drawable/pencil"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,8 +96,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#BDBCBC"
-        android:layout_marginStart="50dp"
+        android:background="#757575"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 

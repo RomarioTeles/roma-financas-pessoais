@@ -9,12 +9,13 @@ import java.util.Objects;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import app.roma.financaspessoais.datasource.daos.DataConverters;
 
-@Entity(tableName = "item_receita")
+@Entity(foreignKeys = {@ForeignKey(entity = ReceitaMes.class, parentColumns = "id", childColumns = "receita_mes")})
 public class ItemReceita extends EntidadeRemovivel{
 
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +23,7 @@ public class ItemReceita extends EntidadeRemovivel{
 
     private String descricao;
 
-    private LocalDateTime data;
+    private LocalDateTime data = LocalDateTime.now();
 
     private BigDecimal valor;
 

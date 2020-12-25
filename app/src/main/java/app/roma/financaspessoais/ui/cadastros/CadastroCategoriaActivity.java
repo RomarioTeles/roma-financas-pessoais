@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
 public class CadastroCategoriaActivity extends AppCompatActivity {
 
     private Categoria categoria;
@@ -45,7 +47,7 @@ public class CadastroCategoriaActivity extends AppCompatActivity {
 
         EditText editTextNome = findViewById(R.id.editTextNome);
 
-        Button buttonAdicionar = findViewById(R.id.buttonAdicionar);
+        ExtendedFloatingActionButton buttonAdicionar = findViewById(R.id.fabAdicionar);
 
         Switch switchAtivar = findViewById(R.id.switchAtivar);
 

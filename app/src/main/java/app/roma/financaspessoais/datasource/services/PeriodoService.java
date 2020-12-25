@@ -133,11 +133,10 @@ public class PeriodoService {
 
     private void createDespesasDoPeriodo(String periodo) {
         Set<DespesaMes> despesasIds = new HashSet<>();
-        CategoriaDAO categoriaDAO = AppDataBase.getAppDataBase(context).categoriaDAO();
         DespesaMesDAO despesaMesDAO = AppDataBase.getAppDataBase(context).despesaMesDAO();
         Integer count = despesaMesDAO.countByPeriodo(periodo);
         if(count == 0){
-            List<ItemDespesaRecorrente> despesas = AppDataBase.getAppDataBase(context).itemDespesaDAO().getTodosItemReceitasRecorrentes();
+            List<ItemDespesaRecorrente> despesas = AppDataBase.getAppDataBase(context).itemDespesaDAO().getTodosItemDespesasRecorrentes();
             despesas.stream().forEach(categoria -> {
                 DespesaMes despesaMes = new DespesaMes(null, periodo, categoria.getCategoriaNome(), categoria.getCategoriaId());
                 Long id = null;

@@ -13,7 +13,7 @@ import io.reactivex.Completable;
 public abstract class ItemReceitaDAO extends BaseDAO<ItemReceita> {
 
 
-    @Query("SELECT distinct ir.descricao, r.categoriaNome, r.categoriaId FROM item_receita ir JOIN receita_mes r ON r.id = ir.receita_mes WHERE ir.recorrente = 1 and ir.flagRemocao = 0 and r.flagRemocao = 0")
+    @Query("SELECT distinct ir.descricao, r.categoriaNome, r.categoriaId FROM itemreceita ir JOIN receitames r ON r.id = ir.receita_mes WHERE ir.recorrente = 1 and ir.flagRemocao = 0 and r.flagRemocao = 0")
     public abstract List<ItemReceitaRecorrente> getTodosItemReceitasRecorrentes();
 
 }

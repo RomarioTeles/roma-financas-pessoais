@@ -15,13 +15,13 @@ public abstract class CategoriaDAO extends BaseDAO<Categoria>{
     @Query("SELECT * FROM Categoria")
     public abstract LiveData<List<CategoriaComMetas>> getTodasCategoriasComMetas();
 
-    @Query("SELECT * FROM Categoria AS c JOIN categoria_meta m ON m.categoria = c.id WHERE UPPER(c.nome) = UPPER(:nome) AND m.periodo = :periodo")
+    @Query("SELECT * FROM Categoria AS c JOIN categoriameta m ON m.categoria = c.id WHERE UPPER(c.nome) = UPPER(:nome) AND m.periodo = :periodo")
     public abstract LiveData<List<CategoriaComMetas>> getTodasCategoriasComMetas(String nome, String periodo);
 
     @Query("SELECT * FROM Categoria WHERE subcategoria = 1 and tipo_lancamento = :tipoLancamento and flagRemocao = 0")
     public abstract LiveData<List<Categoria>> getTodasSubcategorias(TipoLancamento tipoLancamento);
 
-    @Query("SELECT * FROM Categoria WHERE tipo_lancamento = :tipoLancamento ")
+    @Query("SELECT * FROM Categoria WHERE subcategoria = 0 and tipo_lancamento = :tipoLancamento and flagRemocao = 0")
     public abstract LiveData<List<Categoria>> getTodasCategorias(TipoLancamento tipoLancamento);
 
 }

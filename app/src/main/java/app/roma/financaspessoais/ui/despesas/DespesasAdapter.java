@@ -19,12 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
 import app.roma.financaspessoais.entities.DespesaMes;
 import app.roma.financaspessoais.entities.ItemDespesa;
+import app.roma.financaspessoais.entities.ItemReceita;
 import app.roma.financaspessoais.entities.rel.DespesaMesComItems;
+import app.roma.financaspessoais.ui.receitas.ReceitasAdapter;
 
 public class DespesasAdapter extends BaseExpandableListAdapter {
 
@@ -42,7 +45,11 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
 
     private void processaLista(List<DespesaMesComItems> items){
         if(items != null && items.size() > 0){
-            items.forEach(item -> mapItems.put(item.getDespesaMes(), item.getItens()));
+            items.forEach(item -> {
+                Set<ItemDespesa> itemDespesas = item.getItens().stream().filter(ir -> !ir.isFlagRemocao() )
+                        .collect(Collectors.toSet());
+                mapItems.put(item.getDespesaMes(), itemDespesas);
+            });
             expandableListTitle.addAll(mapItems.keySet());
         }
     }
@@ -75,6 +82,11 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return ((ItemDespesa) getChild(groupPosition, childPosition)).getId();
+    }
+
+    public void removeChild(int groupPosition, int childPosition){
+        this.mapItems.get(expandableListTitle.get(groupPosition)).remove(childPosition);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -113,6 +125,7 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
         EditText editTextValor = convertView.findViewById(R.id.editTextValor);
         ImageButton buttonEditar = convertView.findViewById(R.id.buttonEditar);
         ImageButton buttonConfirmar = convertView.findViewById(R.id.buttonConfirmar);
+        ImageButton buttonDelete = convertView.findViewById(R.id.buttonDelete);
 
         textviewDescricao.setText(itemDespesa.getDescricao());
         textviewValor.setText("R$ "+itemDespesa.getValor().toString());
@@ -135,6 +148,8 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
 
             textviewValor.setVisibility(View.GONE);
             buttonConfirmar.setVisibility(View.VISIBLE);
+
+            editTextValor.requestFocus();
 
         }else{
             editTextValor.setVisibility(View.GONE);
@@ -160,6 +175,13 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
             new UpdateItemTask().execute(itemDespesa);
         });
 
+        buttonDelete.setOnClickListener(v -> {
+            itemDespesa.setFlagRemocao(true);
+            new UpdateItemTask().execute(itemDespesa);
+            removeChild(groupPosition, childPosition);
+        });
+
+
         return convertView;
     }
 
@@ -178,4 +200,6 @@ public class DespesasAdapter extends BaseExpandableListAdapter {
             return null;
         }
     }
+
+
 }

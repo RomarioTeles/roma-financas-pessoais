@@ -11,7 +11,7 @@ import app.roma.financaspessoais.entities.rel.ItemReceitaRecorrente;
 @Dao
 public abstract class ItemDespesaDAO extends BaseDAO<ItemDespesa> {
 
-    @Query("SELECT distinct ir.descricao, r.categoriaNome, r.categoriaId FROM item_despesa ir JOIN receita_mes r ON r.id = ir.despesa_mes WHERE ir.recorrente = 1 and ir.flagRemocao = 0 and r.flagRemocao = 0")
-    public abstract List<ItemDespesaRecorrente> getTodosItemReceitasRecorrentes();
+    @Query("SELECT distinct ir.descricao, r.categoriaNome, r.categoriaId FROM itemdespesa ir JOIN despesames r ON r.id = ir.despesa_mes WHERE ir.recorrente = 1 and ir.flagRemocao = 0 and r.flagRemocao = 0")
+    public abstract List<ItemDespesaRecorrente> getTodosItemDespesasRecorrentes();
 
 }

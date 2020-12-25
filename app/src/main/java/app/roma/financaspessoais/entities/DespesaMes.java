@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "despesa_mes")
+@Entity
 public class DespesaMes extends EntidadeRemovivel{
 
     @PrimaryKey(autoGenerate = true)

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
@@ -43,7 +44,10 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
 
     private void processaLista(List<ReceitaMesComItems> items){
         if(items != null && items.size() > 0){
-            items.forEach(item -> mapItems.put(item.getReceitaMes(), item.getItens()));
+            items.forEach(item -> {
+                Set<ItemReceita> itemReceitas = item.getItens().stream().filter(ir -> !ir.isFlagRemocao() ).collect(Collectors.toSet());
+                mapItems.put(item.getReceitaMes(), itemReceitas);
+            });
             expandableListTitle.addAll(mapItems.keySet());
         }
     }
@@ -76,6 +80,11 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return ((ItemReceita) getChild(groupPosition, childPosition)).getId();
+    }
+
+    public void removeChild(int groupPosition, int childPosition){
+        this.mapItems.get(expandableListTitle.get(groupPosition)).remove(childPosition);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -113,6 +122,7 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         EditText editTextValor = convertView.findViewById(R.id.editTextValor);
         ImageButton buttonEditar = convertView.findViewById(R.id.buttonEditar);
         ImageButton buttonConfirmar = convertView.findViewById(R.id.buttonConfirmar);
+        ImageButton buttonDelete = convertView.findViewById(R.id.buttonDelete);
 
         textviewDescricao.setText(itemReceita.getDescricao());
         textviewValor.setText("R$ "+itemReceita.getValor().toString());
@@ -136,6 +146,8 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
             textviewValor.setVisibility(View.GONE);
             buttonConfirmar.setVisibility(View.VISIBLE);
 
+            editTextValor.requestFocus();
+
         }else{
             editTextValor.setVisibility(View.GONE);
             buttonEditar.setVisibility(View.VISIBLE);
@@ -158,6 +170,12 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
             BigDecimal valor = new BigDecimal(editTextValor.getText().toString());
             itemReceita.setValor(valor);
             new UpdateItemTask().execute(itemReceita);
+        });
+
+        buttonDelete.setOnClickListener(v -> {
+            itemReceita.setFlagRemocao(true);
+            new UpdateItemTask().execute(itemReceita);
+            removeChild(groupPosition, childPosition);
         });
 
         return convertView;

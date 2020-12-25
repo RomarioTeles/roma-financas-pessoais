@@ -10,16 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Romafinancaspessoais">
-
+        <activity android:name=".ui.cadastros.CadastrarReceitaActivity"></activity>
+        <activity android:name=".ui.cadastros.CadastrarDespesaActivity"></activity>
         <activity
             android:name=".ui.cadastros.ListarCategoriasActivity"
-            android:label="@string/title_activity_listar_categorias"/>
-        <activity android:name=".ui.cadastros.CadastroCategoriaActivity"/>
+            android:label="@string/title_activity_listar_categorias" />
+        <activity android:name=".ui.cadastros.CadastroCategoriaActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

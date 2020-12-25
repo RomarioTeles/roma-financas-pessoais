@@ -13,8 +13,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import app.roma.financaspessoais.datasource.daos.DataConverters;
 
-@Entity(tableName = "item_despesa")
-public class ItemDespesa extends EntidadeRemovivel{
+@Entity
+public class ItemDespesa extends EntidadeRemovivel implements Comparable<ItemDespesa> {
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -159,5 +159,10 @@ public class ItemDespesa extends EntidadeRemovivel{
         contentValues.put("flagRemocao", isFlagRemocao());
         contentValues.put("recorrente", recorrente);
         return contentValues;
+    }
+
+    @Override
+    public int compareTo(ItemDespesa o) {
+        return o.getSubcategoria().compareTo(subcategoria);
     }
 }

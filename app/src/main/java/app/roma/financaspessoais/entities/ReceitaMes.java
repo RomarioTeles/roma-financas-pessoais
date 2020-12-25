@@ -5,9 +5,10 @@ import android.content.ContentValues;
 import java.util.Objects;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "receita_mes")
+@Entity(indices = {@Index(value = {"periodo", "categoriaId"}, unique = true)})
 public class ReceitaMes extends EntidadeRemovivel{
 
     @PrimaryKey(autoGenerate = true)

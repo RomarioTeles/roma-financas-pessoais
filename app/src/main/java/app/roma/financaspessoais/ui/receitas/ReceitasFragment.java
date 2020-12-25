@@ -1,7 +1,11 @@
 package app.roma.financaspessoais.ui.receitas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -20,6 +24,7 @@ import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
 import app.roma.financaspessoais.datasource.services.PeriodoService;
 import app.roma.financaspessoais.entities.rel.ReceitaMesComItems;
+import app.roma.financaspessoais.ui.cadastros.CadastrarReceitaActivity;
 
 public class ReceitasFragment extends Fragment {
 
@@ -38,7 +43,7 @@ public class ReceitasFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         View root = inflater.inflate(R.layout.fragment_receitas, container, false);
 
         periodoService = new PeriodoService(this.getContext());
@@ -91,5 +96,22 @@ public class ReceitasFragment extends Fragment {
         for(int i = 0; i < items.size(); i++){
             listViewReceitas.expandGroup(i);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.lancamentos_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_novo:
+                Intent intent = new Intent(getContext(), CadastrarReceitaActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

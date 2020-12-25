@@ -21,10 +21,10 @@ public abstract class BaseDAO<T> {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     public abstract void save(T... objs);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     public abstract long insert(T obj);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     public abstract long[] insert(T... objs);
 
     @Delete
@@ -39,7 +39,7 @@ public abstract class BaseDAO<T> {
 
     public List<T> findAllValid() {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(
-                "select * from " + getTableName() + " where flagRemocao = 0 order by id"
+                "select distinct * from " + getTableName() + " where flagRemocao = 0 order by id"
         );
         return doFindAllValid(query);
     }
