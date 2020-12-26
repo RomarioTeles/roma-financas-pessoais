@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/textviewPeriodo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DDDCDC"
+        android:background="@drawable/shape_circle_borded"
         android:drawableEnd="@drawable/menu_down"
         android:padding="8dp"
         android:text="Janeiro de 2020"
@@ -25,7 +25,7 @@
         android:id="@+id/cardviewTotal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="58dp"
         android:layout_marginBottom="58dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +95,6 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="Total de Despesas Falta Pagar:"
-                    android:textColor="@color/negative"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -105,7 +104,6 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="R$ 0.00"
-                    android:textColor="@color/negative"
                     android:textSize="16sp" />
 
                 <View

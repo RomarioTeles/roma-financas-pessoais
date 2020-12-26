@@ -2,6 +2,7 @@ package app.roma.financaspessoais.ui.despesas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,6 +75,7 @@ public class DespesasFragment extends Fragment {
         textviewTitulo.setText("Despesas de " + periodo);
 
         AppDataBase.getAppDataBase(getContext()).despesaMesDAO().getTodasComItemDespesa(periodo).observe(getViewLifecycleOwner(), event -> {
+            Log.i("List Observer", "Chamado");
             items = new ArrayList(event);
             atualizaProgressBar();
         });

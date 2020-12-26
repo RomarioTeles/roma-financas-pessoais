@@ -5,15 +5,19 @@ import app.roma.financaspessoais.R;
 import app.roma.financaspessoais.datasource.AppDataBase;
 import app.roma.financaspessoais.entities.Categoria;
 import app.roma.financaspessoais.entities.TipoLancamento;
+import app.roma.financaspessoais.ui.despesas.DespesasAdapter;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
+import java.math.BigDecimal;
 
 public class CadastroCategoriaActivity extends AppCompatActivity {
 
@@ -57,11 +61,25 @@ public class CadastroCategoriaActivity extends AppCompatActivity {
         }
 
         buttonAdicionar.setOnClickListener(v -> {
-            new TaskCategoriaDB().execute();
+            if(!editTextNome.getText().toString().isEmpty()) {
+                categoria.setNome(editTextNome.getText().toString());
+                new TaskCategoriaDB().execute();
+            }
         });
 
         switchAtivar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             categoria.setFlagRemocao(!isChecked);
+        });
+
+        editTextNome.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if(!editTextNome.getText().toString().isEmpty()) {
+                    categoria.setNome(editTextNome.getText().toString());
+                    new TaskCategoriaDB().execute();
+                }
+                return true;
+            }
+            return false;
         });
     }
 
@@ -78,6 +96,12 @@ public class CadastroCategoriaActivity extends AppCompatActivity {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CadastroCategoriaActivity.this.onBackPressed();
         }
     }
 }

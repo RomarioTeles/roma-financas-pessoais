@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
         if(saldo.min(BigDecimal.ZERO).equals(saldo)){
             textviewTotal.setTextColor(getContext().getColor(R.color.negative));
         }else{
-            textviewTotal.setTextColor(getContext().getColor(R.color.positive));
+            textviewTotal.setTextColor(getContext().getColor(android.R.color.darker_gray));
         }
 
     }

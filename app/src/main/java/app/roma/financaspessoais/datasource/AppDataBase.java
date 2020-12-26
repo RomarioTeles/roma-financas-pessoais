@@ -72,7 +72,7 @@ public abstract class AppDataBase extends RoomDatabase {
                 db.beginTransaction();
                 try {
 
-                    String periodo = LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("MMMM 'de' yyyy", Locale.getDefault()));
+                    String periodo = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM 'de' yyyy", Locale.getDefault()));
 
                     db.insert("categoria", 5, new Categoria("Gastos Essenciais", TipoLancamento.DESPESA, false).toContentValues());
                     db.insert("categoria", 5, new Categoria("Desejos", TipoLancamento.DESPESA, false).toContentValues());
@@ -94,7 +94,7 @@ public abstract class AppDataBase extends RoomDatabase {
                     db.insert("receitames", 5, new ReceitaMes(null, periodo, 11L,  "Dividendos").toContentValues());
                     db.insert("receitames", 5, new ReceitaMes(null, periodo, 12L,  "Renda Extra").toContentValues());
 
-                    db.insert("itemreceita", 5, new ItemReceita(null, "Pagamento", LocalDateTime.now(), BigDecimal.ZERO, false, true, 1L).toContentValues());
+                    db.insert("itemreceita", 5, new ItemReceita(null, "Meu salário", LocalDateTime.now(), BigDecimal.ZERO, false, true, 1L).toContentValues());
                     db.insert("itemreceita", 5, new ItemReceita(null, "Meus dividendos", LocalDateTime.now(), BigDecimal.ZERO, false, true, 2L).toContentValues());
                     db.insert("itemreceita", 5, new ItemReceita(null, "Minhas Rendas Extras", LocalDateTime.now(), BigDecimal.ZERO, false, true, 3L).toContentValues());
 

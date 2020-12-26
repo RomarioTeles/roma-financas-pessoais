@@ -10,7 +10,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class DespesaMes extends EntidadeRemovivel{
+public class DespesaMes extends EntidadeRemovivel implements Comparable<DespesaMes>{
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -96,5 +96,10 @@ public class DespesaMes extends EntidadeRemovivel{
         contentValues.put("flagRemocao", isFlagRemocao());
 
         return contentValues;
+    }
+
+    @Override
+    public int compareTo(DespesaMes o) {
+        return this.categoriaNome.compareTo(o.categoriaNome);
     }
 }

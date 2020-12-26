@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -26,7 +27,6 @@ import app.roma.financaspessoais.datasource.AppDataBase;
 import app.roma.financaspessoais.entities.ItemReceita;
 import app.roma.financaspessoais.entities.ReceitaMes;
 import app.roma.financaspessoais.entities.rel.ReceitaMesComItems;
-import app.roma.financaspessoais.ui.despesas.DespesasAdapter;
 
 public class ReceitasAdapter extends BaseExpandableListAdapter {
 
@@ -124,15 +124,20 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         ImageButton buttonConfirmar = convertView.findViewById(R.id.buttonConfirmar);
         ImageButton buttonDelete = convertView.findViewById(R.id.buttonDelete);
 
+        checkboxPago.setOnCheckedChangeListener(null);
+
         textviewDescricao.setText(itemReceita.getDescricao());
         textviewValor.setText("R$ "+itemReceita.getValor().toString());
         editTextValor.setText(itemReceita.getValor().toString());
         checkboxPago.setChecked(itemReceita.isPago());
 
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
         editTextValor.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 BigDecimal valor = new BigDecimal(editTextValor.getText().toString());
                 itemReceita.setValor(valor);
+                imm.hideSoftInputFromWindow(editTextValor.getWindowToken(), 0);
                 new UpdateItemTask().execute(itemReceita);
                 return true;
             }
@@ -147,6 +152,9 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
             buttonConfirmar.setVisibility(View.VISIBLE);
 
             editTextValor.requestFocus();
+            editTextValor.setSelection(editTextValor.length());
+
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 
         }else{
             editTextValor.setVisibility(View.GONE);
@@ -154,6 +162,7 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
 
             textviewValor.setVisibility(View.VISIBLE);
             buttonConfirmar.setVisibility(View.GONE);
+
         }
 
         checkboxPago.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -169,6 +178,7 @@ public class ReceitasAdapter extends BaseExpandableListAdapter {
         buttonConfirmar.setOnClickListener(v -> {
             BigDecimal valor = new BigDecimal(editTextValor.getText().toString());
             itemReceita.setValor(valor);
+            imm.hideSoftInputFromWindow(editTextValor.getWindowToken(), 0);
             new UpdateItemTask().execute(itemReceita);
         });
 

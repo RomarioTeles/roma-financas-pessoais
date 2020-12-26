@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">roma-financas-pessoais</string>
-    <string name="title_home">Home</string>
+    <string name="app_name">Finanças Pessoais Simplificadas</string>
+    <string name="title_home">Relatório do mês</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_listar_receitas_mes">ListarReceitasMesActivity</string>
